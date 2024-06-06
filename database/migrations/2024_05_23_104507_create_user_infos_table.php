@@ -18,8 +18,9 @@ return new class extends Migration
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('phone_number')->nullable();
+            $table->string('nin')->nullable();
             $table->string('address')->nullable();
-            $table->string('lga')->comment('City | LGA: local government area')->nullable();
+            $table->string('lga')->nullable()->comment('City | LGA: local government area');
             $table->string('state')->nullable();
             $table->string('country')->default('nigeria');
             $table->boolean('active')->default(true);

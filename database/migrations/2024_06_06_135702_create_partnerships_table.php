@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('partnerships', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users');
+            $table->string('name');
+            $table->string('address');
+            $table->text('details');
             $table->timestamps();
         });
     }

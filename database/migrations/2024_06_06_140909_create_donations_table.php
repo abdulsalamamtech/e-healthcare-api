@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('donations', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->nullable()->constrained('users');
+            $table->decimal('amount', 10, 2);
+            $table->string('purpose');
+            $table->string('payment_id');
+            $table->string('payment_ref');
+            $table->string('status');
             $table->timestamps();
         });
     }

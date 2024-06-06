@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('emergencies', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->nullable()->constrained('user');
+            $table->foreignId('patient_id')->nullable()->constrained('patients');
+            $table->foreignId('guide_id')->nullable()->constrained('patients');
+            $table->foreignId('hospital_id')->nullable()->constrained('hospitals');
+            $table->string('emergency_no');
+            $table->string('name');
+            $table->string('sex');
+            $table->text('details');
             $table->timestamps();
         });
     }
