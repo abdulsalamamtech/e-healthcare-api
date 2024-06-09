@@ -15,9 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('users');
             $table->decimal('amount', 10, 2);
-            $table->string('purpose');
-            $table->string('payment_id');
-            $table->string('payment_ref');
+            $table->string('purpose')
+                    ->comment('for patients, drugs, operation service, training, vaccination');
             $table->string('status');
             $table->timestamps();
         });

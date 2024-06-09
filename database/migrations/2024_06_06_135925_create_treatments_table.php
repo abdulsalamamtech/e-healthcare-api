@@ -13,10 +13,15 @@ return new class extends Migration
     {
         Schema::create('treatments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('patient_id')->constrained('patients');
-            $table->foreignId('doctor_id')->constrained('doctors');
-            $table->text('description');
-            $table->date('date');
+            $table->foreignId('patient_id')->nullable()->constrained('patients');
+            $table->foreignId('medical_officer_id')->nullable()->constrained('medical_officers');
+            $table->foreignId('doctor_id')->nullable()->constrained('doctors');
+            $table->foreignId('hospital_id')->nullable()->constrained('hospitals');
+            $table->foreignId('emergency_id')->nullable()->constrained('emergencies');
+            $table->string('title')->nullable();
+            $table->text('description')->nullable();
+            $table->decimal('price', 10, 2)->default(0);
+            $table->boolean('paid')->default('false');
             $table->timestamps();
         });
     }

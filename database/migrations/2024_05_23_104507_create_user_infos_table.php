@@ -17,8 +17,13 @@ return new class extends Migration
             $table->foreignId('image_id')->nullable()->constrained('images')->cascadeOnDelete();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
+            $table->string('middle_name')->nullable();
+            $table->string('gender')->nullable();
             $table->string('phone_number')->nullable();
             $table->string('nin')->nullable();
+            $table->date('dob');
+            $table->string('blood_group')->nullable();
+            $table->string('genotype')->nullable();
             $table->string('address')->nullable();
             $table->string('lga')->nullable()->comment('City | LGA: local government area');
             $table->string('state')->nullable();

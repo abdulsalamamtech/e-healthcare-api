@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('drugs', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('pharmacy_id')->nullable()->constrained('pharmacies');
             $table->string('name');
-            $table->text('description');
+            $table->text('description')->nullable();
+            $table->decimal('price', 10, 2)->default(0);
             $table->timestamps();
         });
     }

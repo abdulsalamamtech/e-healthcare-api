@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('created_by')->nullable()->constrained('users')->cascadeOnDelete();
+            $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete();
             $table->foreignId('image_id')->nullable()->constrained('images')->cascadeOnDelete();
             $table->string('title');
             $table->string('slug');
             $table->longText('content');
+            $table->string('tags')->nullable();
             $table->integer('views')->default(0);
             $table->dateTime('published_at')->nullable();
             $table->enum('status', ['draft', 'published', 'archived'])->default('draft');

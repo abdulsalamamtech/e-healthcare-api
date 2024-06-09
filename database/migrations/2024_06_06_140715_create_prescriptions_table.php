@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('prescriptions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('patient_id')->constrained('patients');
-            $table->text('description');
-            $table->text('result');
-            $table->date('date');
+            $table->foreignId('patient_id')->nullable()->constrained('patients');
+            $table->foreignId('medical_officer_id')->nullable()->constrained('medical_officers');
+            $table->foreignId('doctor_id')->nullable()->constrained('doctors');
+            $table->foreignId('hospital_id')->nullable()->constrained('hospitals');
+            $table->foreignId('emergency_id')->nullable()->constrained('emergencies');
+            $table->string('title');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

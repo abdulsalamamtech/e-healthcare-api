@@ -13,9 +13,14 @@ return new class extends Migration
     {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('patient_id')->constrained('patients');
-            $table->foreignId('doctor_id')->constrained('doctors');
+            $table->foreignId('patient_id')->nullable()->constrained('patients');
+            $table->foreignId('medical_officer_id')->nullable()->constrained('medical_officers');
+            $table->foreignId('doctor_id')->nullable()->constrained('doctors');
+            $table->string('title');
+            $table->text('description');
             $table->date('date');
+            $table->decimal('price', 10, 2)->default(0);
+            $table->boolean('paid')->default('false');
             $table->string('status');
             $table->timestamps();
         });

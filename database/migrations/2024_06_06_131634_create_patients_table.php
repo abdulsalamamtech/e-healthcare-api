@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('patients', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->string('name');
-            $table->date('dob');
-            $table->string('address');
-            $table->string('phone');
-            $table->string('email');
+            $table->foreignId('user_id')->nullable()->constrained('users');
+            $table->foreignId('emergency_id')->nullable()->constrained('emergencies');
+            $table->string('name')->nullable();
+            $table->string('allergies')->nullable();
+            $table->string('phone_number')->nullable();
+            $table->string('nin')->nullable();
+            $table->string('guidance_nin')->nullable();
+            $table->string('guidance_phone_number')->nullable();
             $table->timestamps();
         });
     }

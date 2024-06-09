@@ -13,10 +13,14 @@ return new class extends Migration
     {
         Schema::create('lab_tests', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('patient_id')->constrained('patients');
-            $table->text('description');
-            $table->text('result');
+            $table->foreignId('patient_id')->nullable()->constrained('patients');
+            $table->foreignId('emergency_id')->nullable()->constrained('emergencies');
+            $table->string('title');
+            $table->text('description')->nullable();
+            $table->text('result')->nullable();
             $table->date('date');
+            $table->decimal('amount', 10, 2)->default();
+            $table->boolean('paid')->default('false');
             $table->timestamps();
         });
     }
