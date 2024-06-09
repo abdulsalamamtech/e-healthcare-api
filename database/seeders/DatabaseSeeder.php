@@ -49,23 +49,34 @@ class DatabaseSeeder extends Seeder
         // Role::factory()->create([
         //     'role' => 'user',
         // ]);
+
         // Role::factory()->create([
         //     'role' => 'super-admin',
         // ]);
-        // Role::factory()->create([
-        //     'role' => 'admin',
-        // ]);
-        // Role::factory()->create([
-        //     'role' => 'editor',
-        // ]);
-        // Role::factory()->create([
-        //     'role' => 'author',
-        // ]);
-        // Role::factory()->create([
-        //     'role' => 'viewer',
-        // ]);
+        Role::factory()->create([
+            'role' => 'admin',
+        ]);
+        Role::factory()->create([
+            'role' => 'partnerships',
+        ]);
+        Role::factory()->create([
+            'role' => 'hospitals',
+        ]);
+        Role::factory()->create([
+            'role' => 'doctors',
+        ]);
+        Role::factory()->create([
+            'role' => 'medical-officers',
+        ]);
+        Role::factory()->create([
+            'role' => 'patients',
+        ]);
+        Role::factory()->create([
+            'role' => 'emergencies',
+        ]);
 
         // UserRole::factory(10)->create();
+
 
 
 
