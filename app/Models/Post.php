@@ -11,11 +11,12 @@ class Post extends Model
 
 
     protected $fillable = [
-        'created_by',
+        'user_id',
         'image_id',
         'title',
         'slug',
         'content',
+        'tags',
         'views',
         'published_at',
         'status',

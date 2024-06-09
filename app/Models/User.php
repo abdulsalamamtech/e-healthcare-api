@@ -77,31 +77,22 @@ class User extends Authenticatable
     }
 
 
-    // Users
-    public function comments()
-    {
-        return $this->hasMany(Comment::class, 'user_id', 'id');
-    }
-
-    public function likes()
-    {
-        return $this->hasMany(Like::class, 'user-id', 'id');
-    }
-
-    // Admin
-    public function categories()
-    {
-        return $this->hasMany(Category::class, 'created_by', 'id');
-    }
-
-    public function tags()
-    {
-        return $this->hasMany(Tag::class, 'created_by', 'id');
-    }
-
+    // Posts
     public function posts()
     {
         return $this->hasMany(Post::class, 'created_by', 'id');
+    }
+
+
+    // Post likes
+    public function likes()
+    {
+        return $this->hasMany(Like::class, 'user_id', 'id');
+    }
+
+    public function userInfo()
+    {
+        return $this->hasOne(userInfo::class, 'user_id');
     }
 
 }

@@ -14,7 +14,13 @@ class UserInfo extends Model
         'image_id',
         'first_name',
         'last_name',
+        'middle_name',
+        'gender',
         'phone_number',
+        'nin',
+        'dob',
+        'blood_group',
+        'genotype',
         'address',
         'lga',
         'state',
@@ -23,13 +29,14 @@ class UserInfo extends Model
     ];
 
 
+    // User
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-
-    public function profile()
+    // User profile image
+    public function profileImage()
     {
         return $this->hasOne(Image::class, 'image_id', 'id');
     }

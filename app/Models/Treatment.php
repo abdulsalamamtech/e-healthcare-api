@@ -8,4 +8,43 @@ use Illuminate\Database\Eloquent\Model;
 class Treatment extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'patient_id',
+        'medical_officer_id',
+        'doctor_id',
+        'role_id',
+        'hospital_id',
+        'emergency_id',
+        'title',
+        'description',
+        'price',
+        'paid',
+    ];
+
+
+
+    // Patients
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class);
+    }
+
+    // Doctor
+    public function doctor()
+    {
+        return $this->belongsTo(Doctor::class);
+    }
+
+    // Hospital
+    public function hospital(){
+        return $this->belongsTo(Hospital::class);
+    }
+
+    // Emergency
+    public function emergency(){
+        return $this->belongsTo(Emergency::class);
+    }
+
+
 }
