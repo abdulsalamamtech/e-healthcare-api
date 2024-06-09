@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Helpers\UserRoleHelper;
 use Illuminate\Validation\Rules;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -23,6 +25,7 @@ class AuthController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'role' => ['nullable', 'string'],
         ]);
 
         // Create user
@@ -31,6 +34,23 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+        // Assigning role to user
+        $role = $request->role;
+        $checkRole = new UserRoleHelper();
+        $checkUserRole = $checkRole->checkRole($user->id, 'admin');
+        $publicRole = ['partnerships', 'pharmacies', 'hospitals', 'doctors', 'medical-officers', 'patients', 'emergencies'];
+
+        if($role == 'admin' && $checkUserRole){
+            $roleId = Role::where('role', $role ?? 'patients')->get();
+        }elseif(in_array($role, $publicRole)){
+            $roleId = Role::where('role', $role ?? 'patients')->get();
+        }else{
+            $roleId = Role::where('role', 'patients')->get();
+        }
+        $user->roles()->attach($roleId);
+        $user->load('roles');
+
 
         event(new Registered($user));
 
@@ -91,11 +111,11 @@ class AuthController extends Controller
     public function auth(Request $request)
     {
         // Get user
-        $user = $request->user();
+        $user = $request->user() ?? [];
 
         // return response
         return response()->json([
-            'success' => 'true',
+            'success' => $user ? 'true' : 'false',
             'message' => $user ? 'User is authenticated' : 'User is not authenticated.',
             'user' => $user
         ], $user ? 201 : 419);

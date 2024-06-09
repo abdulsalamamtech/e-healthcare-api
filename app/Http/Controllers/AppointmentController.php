@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAppointmentRequest;
 use App\Http\Requests\UpdateAppointmentRequest;
+use App\Http\Resources\AppointmentResource;
 use App\Models\Appointment;
 
 class AppointmentController extends Controller
@@ -13,7 +14,13 @@ class AppointmentController extends Controller
      */
     public function index()
     {
-        //
+        $appointment = Appointment::paginate(20)->withQueryString();
+        $metaData = $this->getMetadata($appointment);
+        $appointment->load($this->relationships());
+
+
+        $data = AppointmentResource::collection($appointment);
+        return $this->sendSuccess(data: $data, metadata: $metaData);
     }
 
     /**
