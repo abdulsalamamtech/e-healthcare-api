@@ -14,6 +14,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\PatientController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserInfoController;
 use App\Http\Controllers\UserRoleController;
@@ -126,12 +127,8 @@ Route::middleware(['auth:sanctum'])->group(function(){
 
 // 'patients'
 Route::middleware(['auth:sanctum'])->group(function(){
-    Route::prefix('patients')->group(function () {
-        Route::get('/', function(){
-            return 'admin';
-        });
-        Route::apiResource('patients', LikeController::class);
-    });
+    Route::apiResource('patients', PatientController::class)
+        ->except('destroy');
 });
 
 
