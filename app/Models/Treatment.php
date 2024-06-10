@@ -23,6 +23,11 @@ class Treatment extends Model
     ];
 
 
+    // Medical officer
+    public function medicalOfficer()
+    {
+        return $this->belongsTo(MedicalOfficer::class, 'medical_officer_id');
+    }
 
     // Patients
     public function patient()

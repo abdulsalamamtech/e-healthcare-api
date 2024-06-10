@@ -14,4 +14,17 @@ class Pharmacy extends Model
         'name',
         'address',
     ];
+
+
+    // User
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    // Drugs
+    public function drugs()
+    {
+        return $this->hasMany(Drug::class);
+    }
 }

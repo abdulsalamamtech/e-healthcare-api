@@ -2,8 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Patient;
+use App\Models\Emergency;
+use App\Models\Treatment;
+use App\Models\Appointment;
+use App\Models\Prescription;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class MedicalOfficer extends Model
 {
