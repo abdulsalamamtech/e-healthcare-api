@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Storemedical_officerRequest;
-use App\Http\Requests\Updatemedical_officerRequest;
-use App\Models\medical_officer;
+use App\Http\Requests\StoreMedicalOfficerRequest;
+use App\Http\Requests\UpdateMedicalOfficerRequest;
+use App\Http\Resources\MedicalOfficerResource;
+use App\Models\MedicalOfficer;
 
 class MedicalOfficerController extends Controller
 {
@@ -13,54 +14,72 @@ class MedicalOfficerController extends Controller
      */
     public function index()
     {
-        //
+        $MedicalOfficers = MedicalOfficer::paginate(20)->withQueryString();
+        $metaData = $this->getMetadata($MedicalOfficers);
+        $MedicalOfficers->load($this->relationships());
+
+
+        $data = MedicalOfficerResource::collection($MedicalOfficers);
+        return $this->sendSuccess(data: $data, metadata: $metaData);
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Storemedical_officerRequest $request)
+    public function store(StoreMedicalOfficerRequest $request)
     {
-        //
+        $data = MedicalOfficer::create($request->validated());
+        return $this->sendSuccess($data, 'medical officer created successfully');
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(medical_officer $medical_officer)
+    public function show(MedicalOfficer $MedicalOfficer)
     {
-        //
+        $MedicalOfficer->load($this->relationships());
+
+        $data = new MedicalOfficerResource($MedicalOfficer);
+        return $this->sendSuccess($data, 'medical officer fetched successfully');
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(medical_officer $medical_officer)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Updatemedical_officerRequest $request, medical_officer $medical_officer)
+    public function update(UpdateMedicalOfficerRequest $request, MedicalOfficer $MedicalOfficer)
     {
-        //
+        $MedicalOfficer->update($request->validated());
+        $data = new MedicalOfficerResource($MedicalOfficer);
+        return $this->sendSuccess($data, 'medical officer updated successfully');
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(medical_officer $medical_officer)
+    public function destroy(MedicalOfficer $MedicalOfficer)
     {
-        //
+        $user = request()->user();
+
+        if($user->roleHas('admin') || $MedicalOfficer->user_id == $user->id){
+            $MedicalOfficer->delete();
+        }else{
+            abort(code: 403, message: 'unauthorized action');
+        }
+
+        return $this->sendSuccess([], 'medical officer deleted successfully');
+
+    }
+
+    // Model relationships
+    protected function relationships()
+    {
+        return ['user', 'patient', 'emergencies', 'appointments','treatments','prescriptions','emergencies'];
     }
 }

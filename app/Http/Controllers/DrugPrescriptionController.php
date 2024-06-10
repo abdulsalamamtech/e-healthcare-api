@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DrugPrescription;
+use App\Http\Resources\DrugPrescriptionResource;
 use App\Http\Requests\StoreDrugPrescriptionRequest;
 use App\Http\Requests\UpdateDrugPrescriptionRequest;
-use App\Models\DrugPrescription;
 
 class DrugPrescriptionController extends Controller
 {
@@ -13,23 +14,25 @@ class DrugPrescriptionController extends Controller
      */
     public function index()
     {
-        //
+        $DrugPrescription = DrugPrescription::paginate(20)->withQueryString();
+        $metaData = $this->getMetadata($DrugPrescription);
+        $DrugPrescription->load($this->relationships());
+
+
+        $data = DrugPrescriptionResource::collection($DrugPrescription);
+        return $this->sendSuccess(data: $data, metadata: $metaData);
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreDrugPrescriptionRequest $request)
     {
-        //
+        $data = DrugPrescription::create($request->validated());
+        return $this->sendSuccess($data, 'drug prescription created successfully');
     }
 
     /**
@@ -37,23 +40,25 @@ class DrugPrescriptionController extends Controller
      */
     public function show(DrugPrescription $drugPrescription)
     {
-        //
+
+        $drugPrescription->load($this->relationships());
+
+        $data = new DrugPrescriptionResource($drugPrescription);
+        return $this->sendSuccess($data, 'drug prescription fetched successfully');
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(DrugPrescription $drugPrescription)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateDrugPrescriptionRequest $request, DrugPrescription $drugPrescription)
     {
-        //
+        $drugPrescription->update($request->validated());
+        $data = new DrugPrescriptionResource($drugPrescription);
+        return $this->sendSuccess($data, 'drug prescription updated successfully');
+
     }
 
     /**
@@ -61,6 +66,21 @@ class DrugPrescriptionController extends Controller
      */
     public function destroy(DrugPrescription $drugPrescription)
     {
-        //
+        $user = request()->user();
+
+        if($user->roleHas('pharmacies') || $drugPrescription->user_id == $user->id){
+            $drugPrescription->delete();
+        }else{
+            abort(code: 403, message: 'unauthorized action');
+        }
+
+        return $this->sendSuccess([], 'drug prescription deleted successfully');
+
+    }
+
+    // Model relationships
+    protected function relationships()
+    {
+        return;
     }
 }

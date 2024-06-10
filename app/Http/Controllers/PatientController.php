@@ -21,6 +21,7 @@ class PatientController extends Controller
 
         $data = PatientResource::collection($patient);
         return $this->sendSuccess(data: $data, metadata: $metaData);
+
     }
 
     /**
@@ -30,6 +31,7 @@ class PatientController extends Controller
     {
         $data = Patient::create($request->validated());
         return $this->sendSuccess($data, 'patient created successfully');
+
     }
 
     /**
@@ -79,7 +81,7 @@ class PatientController extends Controller
 
     }
 
-    // Patients relationships
+    // Model relationships
     protected function relationships()
     {
         return ['user','emergency', 'appointments','treatments','prescriptions','emergencies'];

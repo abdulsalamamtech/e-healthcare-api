@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Hospital;
+use App\Http\Resources\HospitalResource;
 use App\Http\Requests\StoreHospitalRequest;
 use App\Http\Requests\UpdateHospitalRequest;
-use App\Models\Hospital;
 
 class HospitalController extends Controller
 {
@@ -13,23 +14,26 @@ class HospitalController extends Controller
      */
     public function index()
     {
-        //
+        $hospitals = Hospital::paginate(20)->withQueryString();
+        $metaData = $this->getMetadata($hospitals);
+        $hospitals->load($this->relationships());
+
+
+        $data = HospitalResource::collection($hospitals);
+        return $this->sendSuccess(data: $data, metadata: $metaData);
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreHospitalRequest $request)
     {
-        //
+        $data = Hospital::create($request->validated());
+        return $this->sendSuccess($data, 'hospital created successfully');
+
     }
 
     /**
@@ -37,23 +41,30 @@ class HospitalController extends Controller
      */
     public function show(Hospital $hospital)
     {
-        //
+        $hospital->load($this->relationships());
+
+        $data = new HospitalResource($hospital);
+        return $this->sendSuccess($data, 'hospital fetched successfully');
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Hospital $hospital)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateHospitalRequest $request, Hospital $hospital)
     {
-        //
+        $user = request()->user();
+
+        if($user->roleHas('doctors') || $hospital->user_id == $user->id){
+            $hospital->update($request->validated());
+        }else{
+            abort(code: 403, message: 'unauthorized action');
+        }
+
+        $data = new HospitalResource($hospital);
+        return $this->sendSuccess($data, 'hospital updated successfully');
+
     }
 
     /**
@@ -61,6 +72,21 @@ class HospitalController extends Controller
      */
     public function destroy(Hospital $hospital)
     {
-        //
+        $user = request()->user();
+
+        if($user->roleHas('admin') || $hospital->user_id == $user->id){
+            $hospital->delete();
+        }else{
+            abort(code: 403, message: 'unauthorized action');
+        }
+
+        return $this->sendSuccess([], 'hospital deleted successfully');
+
+    }
+
+    // Model relationships
+    protected function relationships()
+    {
+        return ['user','patients', 'treatments','prescriptions','emergencies', 'labTests'];
     }
 }

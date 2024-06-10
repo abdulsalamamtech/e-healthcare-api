@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Emergency;
+use App\Http\Resources\EmergencyResource;
 use App\Http\Requests\StoreEmergencyRequest;
 use App\Http\Requests\UpdateEmergencyRequest;
-use App\Models\Emergency;
 
 class EmergencyController extends Controller
 {
@@ -13,23 +14,25 @@ class EmergencyController extends Controller
      */
     public function index()
     {
-        //
+        $emergencies = Emergency::paginate(20)->withQueryString();
+        $metaData = $this->getMetadata($emergencies);
+        $emergencies->load($this->relationships());
+
+
+        $data = EmergencyResource::collection($emergencies);
+        return $this->sendSuccess(data: $data, metadata: $metaData);
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreEmergencyRequest $request)
     {
-        //
+        $data = Emergency::create($request->validated());
+        return $this->sendSuccess($data, 'emergency created successfully');
+
     }
 
     /**
@@ -37,23 +40,23 @@ class EmergencyController extends Controller
      */
     public function show(Emergency $emergency)
     {
-        //
+        $emergency->load($this->relationships());
+
+        $data = new EmergencyResource($emergency);
+        return $this->sendSuccess($data, 'drug fetched successfully');
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Emergency $emergency)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateEmergencyRequest $request, Emergency $emergency)
     {
-        //
+        $emergency->update($request->validated());
+        $data = new EmergencyResource($emergency);
+        return $this->sendSuccess($data, 'emergency updated successfully');
+
     }
 
     /**
@@ -61,6 +64,21 @@ class EmergencyController extends Controller
      */
     public function destroy(Emergency $emergency)
     {
-        //
+        $user = request()->user();
+
+        if($user->roleHas('medical-officers') || $emergency->user_id == $user->id){
+            $emergency->delete();
+        }else{
+            abort(code: 403, message: 'unauthorized action');
+        }
+
+        return $this->sendSuccess([], 'emergency deleted successfully');
+
+    }
+
+    // Model relationships
+    protected function relationships()
+    {
+        return ['user','patient', 'guidanceUser','hospital','medicalOfficer'];
     }
 }

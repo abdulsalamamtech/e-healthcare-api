@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LabTest;
+use App\Http\Resources\LabTestResource;
 use App\Http\Requests\StoreLabTestRequest;
 use App\Http\Requests\UpdateLabTestRequest;
-use App\Models\LabTest;
 
 class LabTestController extends Controller
 {
@@ -13,23 +14,25 @@ class LabTestController extends Controller
      */
     public function index()
     {
-        //
+        $LabTests = LabTest::paginate(20)->withQueryString();
+        $metaData = $this->getMetadata($LabTests);
+        $LabTests->load($this->relationships());
+
+
+        $data = LabTestResource::collection($LabTests);
+        return $this->sendSuccess(data: $data, metadata: $metaData);
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreLabTestRequest $request)
     {
-        //
+        $data = LabTest::create($request->validated());
+        return $this->sendSuccess($data, 'lab test created successfully');
+
     }
 
     /**
@@ -37,23 +40,30 @@ class LabTestController extends Controller
      */
     public function show(LabTest $labTest)
     {
-        //
+        $labTest->load($this->relationships());
+
+        $data = new LabTestResource($labTest);
+        return $this->sendSuccess($data, 'lab test fetched successfully');
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(LabTest $labTest)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateLabTestRequest $request, LabTest $labTest)
     {
-        //
+        $user = request()->user();
+
+        if($user->roleHas('doctors') || $labTest->user_id == $user->id){
+            $labTest->update($request->validated());
+        }else{
+            abort(code: 403, message: 'unauthorized action');
+        }
+
+        $data = new LabTestResource($labTest);
+        return $this->sendSuccess($data, 'lab test updated successfully');
+
     }
 
     /**
@@ -61,6 +71,21 @@ class LabTestController extends Controller
      */
     public function destroy(LabTest $labTest)
     {
-        //
+        $user = request()->user();
+
+        if($user->roleHas('doctors') || $labTest->user_id == $user->id){
+            $labTest->delete();
+        }else{
+            abort(code: 403, message: 'unauthorized action');
+        }
+
+        return $this->sendSuccess([], 'lab test deleted successfully');
+
+    }
+
+    // Model relationships
+    protected function relationships()
+    {
+        return ['patients', 'emergency', 'hospital'];
     }
 }

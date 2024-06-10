@@ -23,20 +23,15 @@ class AppointmentController extends Controller
         return $this->sendSuccess(data: $data, metadata: $metaData);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreAppointmentRequest $request)
     {
-        //
+        $data = Appointment::create($request->validated());
+        return $this->sendSuccess($data, 'Appointment created successfully');
+
     }
 
     /**
@@ -44,23 +39,29 @@ class AppointmentController extends Controller
      */
     public function show(Appointment $appointment)
     {
-        //
+        $appointment->load($this->relationships());
+
+        $data = new AppointmentResource($appointment);
+        return $this->sendSuccess($data, 'appointment fetched successfully');
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Appointment $appointment)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateAppointmentRequest $request, Appointment $appointment)
     {
-        //
+        $user = request()->user();
+
+        if($user->roleHas('medical-doctors') || $appointment->user_id == $user->id){
+            $appointment->update($request->validated());
+        }else{
+            abort(code: 403, message: 'unauthorized action');
+        }
+
+        $data = new AppointmentResource($appointment);
+        return $this->sendSuccess($data, 'appointment updated successfully');
     }
 
     /**
@@ -68,6 +69,22 @@ class AppointmentController extends Controller
      */
     public function destroy(Appointment $appointment)
     {
-        //
+        $user = request()->user();
+
+        if($user->roleHas('admin') || $appointment->user_id == $user->id){
+            $appointment->delete();
+        }else{
+            abort(code: 403, message: 'unauthorized action');
+        }
+
+        return $this->sendSuccess([], 'appointment deleted successfully');
+
+    }
+
+
+    // Model relationships
+    protected function relationships()
+    {
+        return ['patient','doctor', 'medicalOfficer'];
     }
 }
