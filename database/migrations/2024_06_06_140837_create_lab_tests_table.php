@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('patient_id')->nullable()->constrained('patients');
             $table->foreignId('emergency_id')->nullable()->constrained('emergencies');
+            $table->foreignId('hospital_id')->nullable()->constrained('hospitals');
             $table->string('title');
             $table->text('description')->nullable();
             $table->text('result')->nullable();
-            $table->date('date');
             $table->decimal('amount', 10, 2)->default();
             $table->boolean('paid')->default('false');
             $table->timestamps();
