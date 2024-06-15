@@ -13,7 +13,6 @@ class Treatment extends Model
         'patient_id',
         'medical_officer_id',
         'doctor_id',
-        'role_id',
         'hospital_id',
         'emergency_id',
         'title',

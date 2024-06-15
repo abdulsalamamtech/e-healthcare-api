@@ -28,11 +28,11 @@ class Doctor extends Model
         return $this->belongsTo(User::class);
     }
 
-    // Patients
-    public function patients()
-    {
-        return $this->hasMany(Patient::class);
-    }
+    // // Patients
+    // public function patients()
+    // {
+    //     return $this->hasMany(Patient::class);
+    // }
 
     // Treatments
     public function treatments()
@@ -47,10 +47,10 @@ class Doctor extends Model
     }
 
     // Emergencies
-    public function emergencies()
-    {
-        return $this->hasMany(Emergency::class);
-    }
+    // public function emergencies()
+    // {
+    //     return $this->hasMany(Emergency::class);
+    // }
 
     // Prescriptions
     public function prescriptions()

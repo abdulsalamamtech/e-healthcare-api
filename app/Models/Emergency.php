@@ -17,6 +17,7 @@ class Emergency extends Model
         'user_id',
         'patient_id',
         'medical_officer_id',
+        'doctor_id',
         'guidance_user_id',
         'hospital_id',
         'emergency_no',
@@ -43,6 +44,11 @@ class Emergency extends Model
         return $this->belongsTo(Patient::class);
     }
 
+    // Doctor
+    public function doctor()
+    {
+        return $this->belongsTo(Doctor::class, 'doctor_id', 'id');
+    }
     // Guidance User
     public function guidanceUser()
     {

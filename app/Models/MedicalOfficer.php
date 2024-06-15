@@ -22,11 +22,17 @@ class MedicalOfficer extends Model
         'address',
     ];
 
-    // Patients
-    public function patients()
+    // User
+    public function user()
     {
-        return $this->hasMany(Patient::class);
+        return $this->belongsTo(User::class);
     }
+
+    // // Patients
+    // public function patients()
+    // {
+    //     return $this->hasMany(Patient::class);
+    // }
 
     // Treatments
     public function treatments()

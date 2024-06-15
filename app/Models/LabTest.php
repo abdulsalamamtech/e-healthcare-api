@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Doctor;
 use App\Models\Patient;
 use App\Models\Hospital;
 use App\Models\Emergency;
@@ -14,6 +15,7 @@ class LabTest extends Model
 
     protected $fillable = [
         'patient_id',
+        'doctor_id',
         'emergency_id',
         'hospital_id',
         'title',
@@ -28,6 +30,12 @@ class LabTest extends Model
     public function patient()
     {
         return $this->belongsTo(Patient::class);
+    }
+
+    // Doctor
+    public function doctor()
+    {
+        return $this->belongsTo(Doctor::class);
     }
 
     // Emergencies

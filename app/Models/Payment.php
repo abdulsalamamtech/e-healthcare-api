@@ -18,4 +18,10 @@ class Payment extends Model
         'payment_method',
         'status',
     ];
+
+    // User
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
