@@ -212,8 +212,12 @@ Route::get('assign', function(){
         'password' => Hash::make('password'),
     ];
 
-    echo $user = User::create($userData);
-    echo "<br>";
+    echo $selectUser = User::where('id', $userData['email'])->first();
+    if(!$selectUser){
+        echo $user = User::create($userData);
+        echo "<br>";
+    }
+
 
     $roleData = ['super-admin', 'admin', 'editor', 'author', 'viewer', 'user'];
     $RD = [];
