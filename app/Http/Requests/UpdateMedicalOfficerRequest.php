@@ -11,7 +11,7 @@ class UpdateMedicalOfficerRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,10 @@ class UpdateMedicalOfficerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'user_id' => ['nullable', 'integer'],
+            'name' => ['nullable', 'string'],
+            'specialization' => ['nullable', 'string'],
+            'address' => ['nullable', 'string'],
         ];
     }
 }

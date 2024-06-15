@@ -11,7 +11,7 @@ class StoreTreatmentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,15 @@ class StoreTreatmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'patient_id' => ['nullable', 'integer'],
+            'medical_officer_id' => ['nullable', 'integer'],
+            'doctor_id' => ['nullable', 'integer'],
+            'hospital_id' => ['nullable', 'integer'],
+            'emergency_id' => ['nullable', 'integer'],
+            'title' => ['required', 'string'],
+            'description' => ['required', 'string'],
+            'price' => ['nullable', 'string'],
+            'paid' => ['nullable', 'string'],
         ];
     }
 }

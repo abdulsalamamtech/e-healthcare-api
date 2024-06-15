@@ -11,7 +11,7 @@ class StorePaymentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,13 @@ class StorePaymentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'user_id' => ['nullable', 'integer'],
+            'tracking_no' => ['nullable','string'],
+            'transaction_id' => ['nullable','string'],
+            'session_id' => ['nullable','string'],
+            'total_price' => ['required', 'string'],
+            'payment_method' => ['nullable', 'string'],
+            'status' => ['nullable', 'string'],
         ];
     }
 }

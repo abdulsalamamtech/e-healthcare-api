@@ -22,8 +22,8 @@ class UpdateUserInfoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['nullable', 'numeric', 'min:1'],
-            'image_id' => ['nullable', 'numeric', 'min:1'],
+            'user_id' => ['nullable', 'integer', 'min:1'],
+            'image_id' => ['nullable', 'integer', 'min:1'],
             'first_name' => ['nullable', 'string', 'min:2', 'max:20'],
             'last_name' => ['nullable', 'string', 'min:2', 'max:20'],
             'phone_number' => ['nullable', 'string', 'min:10', 'max:14'],

@@ -11,7 +11,7 @@ class StorePharmacyRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class StorePharmacyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'user_id' => ['nullable', 'integer'],
+            'name' => ['required', 'string'],
+            'address' => ['nullable', 'string'],
         ];
     }
 }

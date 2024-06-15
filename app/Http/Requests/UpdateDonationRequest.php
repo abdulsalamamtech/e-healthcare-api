@@ -11,7 +11,7 @@ class UpdateDonationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class UpdateDonationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'amount' => ['nullable', 'integer'],
+            'purpose' => ['nullable', 'string'],
+            'status' => ['nullable', 'string'],
         ];
     }
 }

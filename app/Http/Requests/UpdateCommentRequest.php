@@ -22,11 +22,11 @@ class UpdateCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['nullable', 'numeric', 'min:1'],
-            'post_id' => ['required', 'numeric', 'min:1'],
-            'parent_comment_id' => ['nullable', 'numeric', 'min:1'],
+            'user_id' => ['nullable', 'integer', 'min:1'],
+            'post_id' => ['required', 'integer', 'min:1'],
+            'parent_comment_id' => ['nullable', 'integer', 'min:1'],
             'content' => ['required', 'string', 'min:1'],
-            'active' => ['nullable', 'numeric'],
+            'active' => ['nullable', 'integer'],
         ];
     }
 }

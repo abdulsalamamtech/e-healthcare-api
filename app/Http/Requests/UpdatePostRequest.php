@@ -24,8 +24,8 @@ class UpdatePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'created_by' => ['nullable', 'numeric', 'min:1'],
-            'image_id' => ['nullable', 'numeric', 'min:1'],
+            'created_by' => ['nullable', 'integer', 'min:1'],
+            'image_id' => ['nullable', 'integer', 'min:1'],
             'title' => ['nullable', 'string', 'min:1'],
             'slug' => ['nullable', 'string', 'min:1'],
             'content' => ['nullable', 'string', 'min:1'],

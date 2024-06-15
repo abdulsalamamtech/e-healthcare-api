@@ -11,7 +11,7 @@ class UpdateLabTestRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,15 @@ class UpdateLabTestRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'patient_id' => ['nullable', 'integer'],
+            'doctor_id' => ['nullable', 'integer'],
+            'emergency_id' => ['nullable', 'integer'],
+            'hospital_id' => ['nullable', 'integer'],
+            'title' => ['nullable', 'string'],
+            'description' => ['nullable', 'string'],
+            'result' => ['nullable', 'string'],
+            'amount' => ['nullable', 'integer'],
+            'paid' => ['nullable', 'integer'],
         ];
     }
 }

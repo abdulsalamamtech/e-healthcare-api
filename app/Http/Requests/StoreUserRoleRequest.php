@@ -22,8 +22,8 @@ class StoreUserRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['required', 'numeric', 'min:1'],
-            'role_id' => ['required', 'numeric', 'min:1'],
+            'user_id' => ['required', 'integer', 'min:1'],
+            'role_id' => ['required', 'integer', 'min:1'],
         ];
     }
 }

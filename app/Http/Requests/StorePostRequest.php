@@ -22,14 +22,14 @@ class StorePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'created_by' => ['nullable', 'numeric', 'min:1'],
-            'image_id' => ['required', 'numeric', 'min:1'],
+            'created_by' => ['nullable', 'integer', 'min:1'],
+            'image_id' => ['required', 'integer', 'min:1'],
             'title' => ['required', 'string', 'min:1'],
             'slug' => ['nullable', 'string', 'min:1', 'unique:posts'],
             'content' => ['required', 'string', 'min:1'],
             'published_at' => ['nullable', 'DateTime'],
             'status' => ['nullable', 'string', 'min:1'],
-            'active' => ['nullable', 'numeric'],
+            'active' => ['nullable', 'integer'],
         ];
     }
 }

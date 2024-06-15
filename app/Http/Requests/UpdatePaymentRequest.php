@@ -22,7 +22,12 @@ class UpdatePaymentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+           'tracking_no' => ['nullable','string'],
+           'transaction_id' => ['nullable','string'],
+           'session_id' => ['nullable','string'],
+           'total_price' => ['required', 'string'],
+           'payment_method' => ['nullable', 'string'],
+           'status' => ['nullable', 'string'],
         ];
     }
 }

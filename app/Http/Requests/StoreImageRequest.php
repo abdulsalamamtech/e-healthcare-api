@@ -25,7 +25,7 @@ class StoreImageRequest extends FormRequest
             'image' => ['required', 'image', 'mimes:png,jpg,jpeg','max:50000'],
             'file_id' => ['nullable', 'string', 'max:20'],
             'url' => ['nullable', 'string', 'max:20'],
-            'size' => ['nullable', 'numeric', 'max:20'],
+            'size' => ['nullable', 'integer', 'max:20'],
             'hosted_at' => ['nullable', 'string', 'max:20'],
             'active' => ['nullable', 'string|boolean'],
         ];

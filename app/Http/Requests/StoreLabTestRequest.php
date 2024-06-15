@@ -11,7 +11,7 @@ class StoreLabTestRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,15 @@ class StoreLabTestRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'patient_id' => ['nullable', 'integer'],
+            'doctor_id' => ['nullable', 'integer'],
+            'emergency_id' => ['nullable', 'integer'],
+            'hospital_id' => ['nullable', 'integer'],
+            'title' => ['required', 'string'],
+            'description' => ['required', 'string'],
+            'result' => ['required', 'string'],
+            'amount' => ['nullable', 'integer'],
+            'paid' => ['nullable', 'integer'],
         ];
     }
 }

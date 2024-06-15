@@ -22,8 +22,8 @@ class StoreUserInfoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['required', 'numeric', 'min:1'],
-            'image_id' => ['required', 'numeric', 'min:1'],
+            'user_id' => ['required', 'integer', 'min:1'],
+            'image_id' => ['required', 'integer', 'min:1'],
             'first_name' => ['required', 'string', 'min:2', 'max:20'],
             'last_name' => ['required', 'string', 'min:2', 'max:20'],
             'phone_number' => ['required', 'string', 'min:10', 'max:14'],

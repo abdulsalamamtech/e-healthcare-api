@@ -22,7 +22,14 @@ class StorePatientRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'user_id' => ['nullable', 'integer'],
+            'emergency_id' => ['nullable', 'integer'],
+            'name' => ['required', 'string'],
+            'allergies' => ['nullable', 'string'],
+            'phone_number' => ['nullable', 'integer', 'min:11', 'max:14'],
+            'nin' => ['nullable', 'integer', 'min:11', 'max:11'],
+            'guidance_nin' => ['nullable', 'integer', 'min:11', 'max:11'],
+            'guidance_phone_number' => ['nullable', 'integer', 'min:11', 'max:14'],
         ];
     }
 }

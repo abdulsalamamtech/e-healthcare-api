@@ -11,7 +11,7 @@ class StoreDrugRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,11 @@ class StoreDrugRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'user_id' => ['nullable', 'integer'],
+            'pharmacy_id' => ['required', 'integer'],
+            'name' => ['required', 'string'],
+            'description' => ['required', 'string'],
+            'price' => ['nullable', 'integer'],
         ];
     }
 }

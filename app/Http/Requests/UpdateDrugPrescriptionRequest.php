@@ -11,7 +11,7 @@ class UpdateDrugPrescriptionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,8 @@ class UpdateDrugPrescriptionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'drug_id' => ['required', 'integer'],
+            'prescription_id' => ['required', 'integer'],
         ];
     }
 }
