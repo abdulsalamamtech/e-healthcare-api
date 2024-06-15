@@ -218,7 +218,7 @@ Route::get('assign', function(){
     $roleData = ['super-admin', 'admin', 'editor', 'author', 'viewer', 'user'];
     $RD = [];
     foreach($roleData as $rd){
-        $RD[] = Role::create($rd);
+        $RD[] = Role::create(['role' => $rd]);
     }
     print($RD);
     echo "<br>";
