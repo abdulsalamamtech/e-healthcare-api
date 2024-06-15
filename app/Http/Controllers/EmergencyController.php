@@ -30,7 +30,12 @@ class EmergencyController extends Controller
      */
     public function store(StoreEmergencyRequest $request)
     {
-        $data = Emergency::create($request->validated());
+        $validatedData = $request->validated();
+        $validatedData['user_id'] = $request->user()->id ?? null;
+        $validatedData['emergency_no'] = strtoupper(uniqid('EHC-'));
+
+        // return $validatedData;
+        $data = Emergency::create($validatedData);
         return $this->sendSuccess($data, 'emergency created successfully');
 
     }
@@ -79,6 +84,6 @@ class EmergencyController extends Controller
     // Model relationships
     protected function relationships()
     {
-        return ['user','patient', 'guidanceUser','hospital','medicalOfficer'];
+        return ['user','patient', 'doctor', 'guidanceUser','hospital','medicalOfficer'];
     }
 }

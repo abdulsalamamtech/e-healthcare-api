@@ -14,12 +14,12 @@ class MedicalOfficerController extends Controller
      */
     public function index()
     {
-        $MedicalOfficers = MedicalOfficer::paginate(20)->withQueryString();
-        $metaData = $this->getMetadata($MedicalOfficers);
-        $MedicalOfficers->load($this->relationships());
+        $medicalOfficers = MedicalOfficer::paginate(20)->withQueryString();
+        $metaData = $this->getMetadata($medicalOfficers);
+        $medicalOfficers->load($this->relationships());
 
 
-        $data = MedicalOfficerResource::collection($MedicalOfficers);
+        $data = MedicalOfficerResource::collection($medicalOfficers);
         return $this->sendSuccess(data: $data, metadata: $metaData);
 
     }
@@ -39,11 +39,11 @@ class MedicalOfficerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(MedicalOfficer $MedicalOfficer)
+    public function show(MedicalOfficer $medicalOfficer)
     {
-        $MedicalOfficer->load($this->relationships());
+        $medicalOfficer->load($this->relationships());
 
-        $data = new MedicalOfficerResource($MedicalOfficer);
+        $data = new MedicalOfficerResource($medicalOfficer);
         return $this->sendSuccess($data, 'medical officer fetched successfully');
 
     }
@@ -80,6 +80,6 @@ class MedicalOfficerController extends Controller
     // Model relationships
     protected function relationships()
     {
-        return ['user', 'patient', 'emergencies', 'appointments','treatments','prescriptions','emergencies'];
+        return ['user', 'emergencies', 'appointments','treatments','prescriptions','emergencies'];
     }
 }

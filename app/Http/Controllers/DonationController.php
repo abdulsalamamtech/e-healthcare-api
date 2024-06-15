@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Donation;
+use App\Http\Resources\DonationResource;
 use App\Http\Requests\StoreDonationRequest;
 use App\Http\Requests\UpdateDonationRequest;
-use App\Models\Donation;
 
 class DonationController extends Controller
 {
@@ -13,23 +14,27 @@ class DonationController extends Controller
      */
     public function index()
     {
-        //
+        $donation = Donation::paginate(20)->withQueryString();
+        $metaData = $this->getMetadata($donation);
+        $donation->load($this->relationships());
+
+
+        $data = DonationResource::collection($donation);
+        return $this->sendSuccess(data: $data, metadata: $metaData);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreDonationRequest $request)
     {
-        //
+        $validatedData = $request->validated();
+        $validatedData['user_id'] = $request->user()->id ?? null;
+
+        $data = Donation::create($validatedData);
+        return $this->sendSuccess($data, 'donation created successfully');
     }
 
     /**
@@ -37,23 +42,23 @@ class DonationController extends Controller
      */
     public function show(Donation $donation)
     {
-        //
+        $donation->load($this->relationships());
+
+        $data = new DonationResource($donation);
+        return $this->sendSuccess($data, 'donation fetched successfully');
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Donation $donation)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateDonationRequest $request, Donation $donation)
     {
-        //
+        $donation->update($request->validated());
+
+        $data = new DonationResource($donation);
+        return $this->sendSuccess($data, 'donation updated successfully');
     }
 
     /**
@@ -61,6 +66,13 @@ class DonationController extends Controller
      */
     public function destroy(Donation $donation)
     {
-        //
+        return $this->sendSuccess([], 'donation can not be deleted');
+
+    }
+
+    // Model relationships
+    protected function relationships()
+    {
+        return ['user'];
     }
 }

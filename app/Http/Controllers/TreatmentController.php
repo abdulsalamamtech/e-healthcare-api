@@ -67,7 +67,7 @@ class TreatmentController extends Controller
     {
         $user = request()->user();
 
-        if($user->roleHas('pharmacies') || $Treatment->user_id == $user->id){
+        if($user->roleHas('medical-officers') || $Treatment->user_id == $user->id){
             $Treatment->delete();
         }else{
             abort(code: 403, message: 'unauthorized action');

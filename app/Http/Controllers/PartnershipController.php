@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Partnership;
+use App\Http\Resources\PartnershipResource;
 use App\Http\Requests\StorePartnershipRequest;
 use App\Http\Requests\UpdatePartnershipRequest;
-use App\Models\Partnership;
 
 class PartnershipController extends Controller
 {
@@ -13,54 +14,79 @@ class PartnershipController extends Controller
      */
     public function index()
     {
-        //
+        $Partnerships = Partnership::paginate(20)->withQueryString();
+        $metaData = $this->getMetadata($Partnerships);
+        $Partnerships->load($this->relationships());
+
+
+        $data = PartnershipResource::collection($Partnerships);
+        return $this->sendSuccess(data: $data, metadata: $metaData);
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(StorePartnershipRequest $request)
     {
-        //
+        $data = Partnership::create($request->validated());
+        return $this->sendSuccess($data, 'Partnership created successfully');
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Partnership $partnership)
+    public function show(Partnership $Partnership)
     {
-        //
+        $Partnership->load($this->relationships());
+
+        $data = new PartnershipResource($Partnership);
+        return $this->sendSuccess($data, 'Partnership fetched successfully');
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Partnership $partnership)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePartnershipRequest $request, Partnership $partnership)
+    public function update(UpdatePartnershipRequest $request, Partnership $Partnership)
     {
-        //
+        $user = request()->user();
+
+        if($user->roleHas('doctors') || $Partnership->user_id == $user->id){
+            $Partnership->update($request->validated());
+        }else{
+            abort(code: 403, message: 'unauthorized action');
+        }
+
+        $data = new PartnershipResource($Partnership);
+        return $this->sendSuccess($data, 'Partnership updated successfully');
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Partnership $partnership)
+    public function destroy(Partnership $Partnership)
     {
-        //
+        $user = request()->user();
+
+        if($user->roleHas('admin') || $Partnership->user_id == $user->id){
+            $Partnership->delete();
+        }else{
+            abort(code: 403, message: 'unauthorized action');
+        }
+
+        return $this->sendSuccess([], 'Partnership deleted successfully');
+
+    }
+
+    // Model relationships
+    protected function relationships()
+    {
+        return ['user'];
     }
 }

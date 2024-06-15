@@ -80,6 +80,6 @@ class DoctorController extends Controller
     // Model relationships
     protected function relationships()
     {
-        return ['user', 'patients', 'emergencies', 'appointments','treatments','prescriptions','emergencies', 'labTests'];
+        return ['user', 'appointments','treatments','prescriptions', 'labTests'];
     }
 }
