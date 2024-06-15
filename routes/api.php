@@ -265,3 +265,56 @@ Route::get('assign', function(){
     return 'assigned!';
 });
 
+
+Route::prefix('test')->group(function () {
+    Route::get('/', function(){
+        return 'testing api...';
+    });
+
+
+
+    Route::apiResource('emergencies', EmergencyController::class)
+    ->except('destroy');
+
+    Route::apiResource('patients', PatientController::class)
+        ->except('destroy');
+
+    Route::apiResource('medical-officers', MedicalOfficerController::class)
+    ->except('destroy');
+
+    Route::apiResource('doctors', DoctorController::class)
+    ->except('destroy');
+
+    Route::apiResource('hospitals', HospitalController::class)
+    ->except('destroy');
+
+    Route::apiResource('pharmacies', PharmacyController::class)
+    ->except('destroy');
+
+    Route::apiResource('partnerships', PartnershipController::class)
+    ->except('destroy');
+
+    Route::apiResource('treatments', TreatmentController::class)
+    ->except('destroy');
+
+    Route::apiResource('appointments', AppointmentController::class)
+    ->except('destroy');
+
+    Route::apiResource('drugs', DrugController::class)
+    ->except('destroy');
+
+    Route::apiResource('prescriptions', PrescriptionController::class)
+    ->except('destroy');
+
+    Route::apiResource('drug-prescriptions', DrugPrescriptionController::class)
+    ->except('destroy');
+
+    Route::apiResource('lab-test', LabTestController::class)
+    ->except('destroy');
+
+    Route::apiResource('donations', DonationController::class)
+    ->except('destroy');
+
+    Route::apiResource('payments', PaymentController::class)
+    ->except('destroy');
+});
