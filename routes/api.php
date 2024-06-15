@@ -1,25 +1,41 @@
 <?php
 
 use App\Models\Role;
-// use app\Http\Middleware\Role;
 use App\Models\User;
+// use app\Http\Middleware\Role;
+use App\Models\Doctor;
+use App\Models\Hospital;
 use App\Models\UserRole;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\DrugController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LabTestController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DonationController;
+use App\Http\Controllers\HospitalController;
+use App\Http\Controllers\PharmacyController;
 use App\Http\Controllers\UserInfoController;
 use App\Http\Controllers\UserRoleController;
+use App\Http\Controllers\EmergencyController;
+use App\Http\Controllers\TreatmentController;
 use App\Http\Controllers\SubscriberController;
-
+use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\PartnershipController;
+use App\Http\Controllers\PrescriptionController;
+use App\Http\Controllers\MedicalOfficerController;
+use App\Http\Controllers\DrugPrescriptionController;
 
 // Authentication file
 require __DIR__.'/api-auth.php';
@@ -58,7 +74,7 @@ Route::middleware(['auth:sanctum', 'role:super-admin'])->group(function(){
 });
 
 
-// 'super-admin'
+
 // 'admin'
 Route::middleware(['auth:sanctum'])->group(function(){
     Route::prefix('admin')->group(function () {
@@ -127,20 +143,58 @@ Route::middleware(['auth:sanctum'])->group(function(){
 
 // 'patients'
 Route::middleware(['auth:sanctum'])->group(function(){
+
+    Route::apiResource('emergencies', EmergencyController::class)
+    ->except('destroy');
+
     Route::apiResource('patients', PatientController::class)
         ->except('destroy');
+
+    Route::apiResource('medical-officers', MedicalOfficerController::class)
+    ->except('destroy');
+
+    Route::apiResource('doctors', DoctorController::class)
+    ->except('destroy');
+
+    Route::apiResource('hospitals', HospitalController::class)
+    ->except('destroy');
+
+    Route::apiResource('pharmacies', PharmacyController::class)
+    ->except('destroy');
+
+    Route::apiResource('partnerships', PartnershipController::class)
+    ->except('destroy');
+
+    Route::apiResource('treatments', TreatmentController::class)
+    ->except('destroy');
+
+    Route::apiResource('appointments', AppointmentController::class)
+    ->except('destroy');
+
+    Route::apiResource('drugs', DrugController::class)
+    ->except('destroy');
+
+    Route::apiResource('prescriptions', PrescriptionController::class)
+    ->except('destroy');
+
+    Route::apiResource('drug-prescriptions', DrugPrescriptionController::class)
+    ->except('destroy');
+
+    Route::apiResource('lab-test', LabTestController::class)
+    ->except('destroy');
+
+    Route::apiResource('donations', DonationController::class)
+    ->except('destroy');
+
+    Route::apiResource('payments', PaymentController::class)
+    ->except('destroy');
+
 });
+
 
 
 // 'emergencies'
-Route::middleware(['quest'])->group(function(){
-    Route::prefix('emergencies')->group(function () {
-        Route::get('/', function(){
-            return 'emergencies';
-        });
-        Route::apiResource('likes', LikeController::class);
-    });
-});
+
 
 
 // Guest users
@@ -151,11 +205,23 @@ Route::middleware(['guest'])->group(function(){
 
 
 Route::get('assign', function(){
-    // return UserRole::create([
-    //     'user_id' => User::where('name', 'amtech')->get()->pluck('id')[0],
-    //     'role_id' => Role::where('role', 'editor')->get()->pluck('id')[0],
-    // ]);
 
+    $userData = [
+        'name' => 'amtech',
+        'email' => 'amtech@gmail.com',
+        'password' => Hash::make('password'),
+    ];
+
+    echo $user = User::create($userData);
+    echo "<br>";
+
+    $roleData = ['super-admin', 'admin', 'editor', 'author', 'viewer', 'user'];
+    $RD = [];
+    foreach($roleData as $rd){
+        $RD[] = Role::create($rd);
+    }
+    print($RD);
+    echo "<br>";
 
     $rolesHierarchy = [
         'super-admin' => ['super-admin', 'admin', 'editor', 'author', 'viewer', 'user'],
@@ -166,8 +232,9 @@ Route::get('assign', function(){
         'user' => ['viewer', 'user'],
     ];
 
-    $user_id = 12;
+    $user_id = 1;
     echo $find_role = 'super-admin';
+    echo "<br>";
 
         if(!$user_id || !$find_role){ return false; }
         $user = User::find($user_id);
@@ -190,10 +257,6 @@ Route::get('assign', function(){
             }
             return false;
         }
-
-
-
-    // return $user;
 
     return 'assigned!';
 });
