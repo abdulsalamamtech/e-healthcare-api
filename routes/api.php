@@ -212,7 +212,7 @@ Route::get('assign', function(){
         'password' => Hash::make('password'),
     ];
 
-    echo $selectUser = User::where('id', $userData['email'])->first();
+    echo $selectUser = User::where('email', $userData['email'])->first();
     if(!$selectUser){
         echo $user = User::create($userData);
         echo "<br>";
