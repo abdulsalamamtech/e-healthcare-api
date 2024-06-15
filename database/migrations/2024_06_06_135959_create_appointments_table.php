@@ -21,7 +21,7 @@ return new class extends Migration
             $table->date('date');
             $table->decimal('price', 10, 2)->default(0);
             $table->boolean('paid')->default('false');
-            $table->string('status');
+            $table->string('status')->default('false');
             $table->timestamps();
         });
     }
