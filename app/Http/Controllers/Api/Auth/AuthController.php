@@ -36,18 +36,15 @@ class AuthController extends Controller
         ]);
 
         // Assigning role to user
-        $role = $request->role;
-        $checkRole = new UserRoleHelper();
-        $checkUserRole = $checkRole->checkRole($user->id, 'admin');
+        $D['role'] = $role = $request->role ?? 'patients';
         $publicRole = ['partnerships', 'pharmacies', 'hospitals', 'doctors', 'medical-officers', 'patients', 'emergencies'];
 
-        if($role == 'admin' && $checkUserRole){
-            $roleId = Role::where('role', $role ?? 'patients')->get();
-        }elseif(in_array($role, $publicRole)){
-            $roleId = Role::where('role', $role ?? 'patients')->get();
+        if(in_array($role, $publicRole)){
+            $roleId = Role::where('role', $role)->first()->id;
         }else{
-            $roleId = Role::where('role', 'patients')->get();
+            $roleId = Role::where('role', 'patients')->first()->id;
         }
+
         $user->roles()->attach($roleId);
         $user->load('roles');
 
@@ -61,7 +58,7 @@ class AuthController extends Controller
         return response()->json([
             'success' => 'true',
             'message' => 'User account created successfully',
-            'user' => $user,
+            'data' => $user,
             'access_token' => $token,
             'token_type' => 'Bearer',
         ], 201);
@@ -86,7 +83,7 @@ class AuthController extends Controller
         return response()->json([
             'success' => 'true',
             'message' => 'User login successful',
-            'user' => $user,
+            'data' => $user,
             'access_token' => $token,
             'token_type' => 'Bearer',
         ], 201);
