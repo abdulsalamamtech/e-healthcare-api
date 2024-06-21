@@ -267,10 +267,10 @@ Route::get('assign', function(){
 
 
 Route::prefix('test')->group(function () {
+
     Route::get('/', function(){
         return 'testing api...';
     });
-
 
 
     Route::apiResource('emergencies', EmergencyController::class)
@@ -317,4 +317,29 @@ Route::prefix('test')->group(function () {
 
     Route::apiResource('payments', PaymentController::class)
     ->except('destroy');
+});
+
+
+
+
+// Migrate users roles after database migration
+Route::get('migrate-roles', function (){
+
+    $result['start'] = now();
+
+    $allRoles = ['super-admin', 'admin', 'partnerships', 'pharmacies', 'hospitals', 'doctors', 'medical-officers', 'patients', 'emergencies'];
+    foreach($allRoles as $role){
+
+        $dbRole = Role::where('role', $role)->get();
+        if(count($dbRole)){
+            continue;
+        }
+
+        Role::create(['role' => $role]);
+    }
+
+    $result['all_roles'] = $allRoles;
+    $result['roles'] = Role::all();
+    $result['end'] = now();
+    return $result;
 });
