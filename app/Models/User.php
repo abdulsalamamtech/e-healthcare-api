@@ -92,7 +92,12 @@ class User extends Authenticatable
 
     public function userInfo()
     {
-        return $this->hasOne(userInfo::class, 'user_id');
+        return $this->hasOne(UserInfo::class, 'user_id');
+    }
+
+    public function emergencies()
+    {
+        return $this->hasMany(Emergency::class);
     }
 
 }
