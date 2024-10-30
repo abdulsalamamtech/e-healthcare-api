@@ -1,6 +1,6 @@
 ## Developed By Abdulsalam Amtech
 
-## Blog Website
+## ehealthcare Website
 
 content management system (CMS) that relies on MySQL (or MariaDB) as its database management system.
 
